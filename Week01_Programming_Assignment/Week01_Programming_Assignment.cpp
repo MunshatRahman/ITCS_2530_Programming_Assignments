@@ -12,7 +12,7 @@ int main() {
 	string FirstDestination;
 	string NextDestination;
 
-	//2. Asking the user where they are planning on biking to. 
+	//2. Asking the user where they are planning on biking to.  
 	//Asks the user for their starting point.
 	cout << "Where will your starting point be? ";
 	cin >> StartingPoint;
