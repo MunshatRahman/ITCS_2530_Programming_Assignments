@@ -29,5 +29,5 @@ int main() {
 	cout << "For your biking route, your starting point is at " << StartingPoint << ", your first destination will be at " << FirstDestination << ", and your next destination will be at " << NextDestination << "." << endl;
 
 	return 0;
-
+ 
 }
