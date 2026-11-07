@@ -22,26 +22,39 @@ int main() {
 	double DistancefromPointAtoB;
 	double DistancefromPointBtoC;
 	double TotalDistance;
+	int MenuChoice;
 
 	//2. Asking the user for their biking route.
 	cout << "Where will your starting point be? ";
 	getline(cin, StartingPoint);
 
 	cout << "Where will your first destination be? ";
-	getline(cin, FirstDestination); 
+	getline(cin, FirstDestination);
 
 	cout << "Where are you planning to go next? ";
 	getline(cin, NextDestination);
 
-	//3. Asking the user for time and length of their route.
+	//3. Asking the user for time and length of their route including input validation.
 	cout << "How long would your biking route take in minutes? ";
-	cin >> Minutes; 
+	cin >> Minutes;
+	while (Minutes <= 0) {
+		cout << "Invalid Input. Minutes cannot be zero or negative. Please enter a valid time in minutes: ";
+		cin >> Minutes;
+	}
 
 	cout << "What is the distance from " << StartingPoint << " to " << FirstDestination << " in miles? ";
 	cin >> DistancefromPointAtoB;
+	while (DistancefromPointAtoB <= 0) {
+		cout << "Invalid Input. Distance cannot be zero or negative. Please enter a valid distance in miles: ";
+		cin >> DistancefromPointAtoB;
+	}
 
 	cout << "What is the distance from " << FirstDestination << " to " << NextDestination << " in miles? ";
 	cin >> DistancefromPointBtoC;
+	while (DistancefromPointBtoC <= 0) {
+		cout << "Invalid Input. Distance cannot be zero or negative. Please enter a valid distance in miles: ";
+		cin >> DistancefromPointBtoC;
+	}
 
 	//4. Calculating the total distance of the biking route.
 	TotalDistance = DistancefromPointAtoB + DistancefromPointBtoC;
@@ -49,35 +62,74 @@ int main() {
 	//5. Displaying the message for the user's biking route.
 	cout << "\nFor your biking route, your starting point is at " << StartingPoint << ", your first destination will be at " << FirstDestination << ", and your next destination will be at " << NextDestination << "." << endl;
 
-	//6. Creating the pretty summary table using an output file.
-	ofstream reportFile("report.txt");
+	//6. Route Analysis with if/else blocks
+	//With AND operator
+	if (TotalDistance < 5.0 && Minutes < 30) {
+		cout << "\nThis route is short and should be easy to complete." << endl;
+	}
+	else {
+		cout << "\nThis route is long and may take a while to complete." << endl;
+	}
 
-	//Displaying the summary table to the user.
-	cout << fixed << setprecision(2);
-	reportFile << fixed << setprecision(2);
-	
-	cout << "\n----------- YOUR BIKING ROUTE SUMMARY -----------" << endl;
-	reportFile << "\n----------- YOUR BIKING ROUTE SUMMARY -----------" << endl;
-	
-	cout << left << setw(24) << "Starting Point: " << right << setw(25) << StartingPoint << endl;
-	reportFile << left << setw(24) << "Starting Point: " << right << setw(25) << StartingPoint << endl;
-	
-	cout << left << setw(24) << "First Destination: " << right << setw(25) << FirstDestination << endl;
-	reportFile << left << setw(24) << "First Destination: " << right << setw(25) << FirstDestination << endl;
+	//With OR operator
+	if (DistancefromPointAtoB > 5.0 || DistancefromPointBtoC > 5.0) {
+		cout << "\nOne of your destinations is more than 5 miles away." << endl;
+	}
+	else {
+		cout << "\nBoth of your destinations are within 5 miles." << endl;
+	}
 
-	cout << left << setw(24) << "Next Destination: " << right << setw(25) << NextDestination << endl;
-	reportFile << left << setw(24) << "Next Destination: " << right << setw(25) << NextDestination << endl;
-	
-	cout << left << setw(24) << "Time (minutes): " << right << setw(25) << Minutes << endl;
-	reportFile << left << setw(24) << "Time (minutes): " << right << setw(25) << Minutes << endl;
+	//7. Adding user input options menu using switch 
+	cout << "\nOptions Menu:" << endl;
+	cout << "1. View and Save Route Summary" << endl;
+	cout << "2. Modify Route" << endl;
+	cout << "3. Exit" << endl;
+	cout << "Please select an option (1-3): ";
+	cin >> MenuChoice;
+						
+	switch (MenuChoice) {
+		case 1: {
+			//8. Creating the pretty summary table using an output file and displaying it to the user.
+			ofstream reportFile("report.txt");
 
-	cout << left << setw(24) << "Total Distance (miles): " << right << setw(25) << TotalDistance << endl;
-	reportFile << left << setw(24) << "Total Distance (miles): " << right << setw(25) << TotalDistance << endl;
-	
-	//Closing the output file.
-	reportFile.close();
-	cout << "\nReport successfully saved to report.txt!\n";
+			cout << fixed << setprecision(2);
+			reportFile << fixed << setprecision(2);
 
+			cout << "\n----------- YOUR BIKING ROUTE SUMMARY -----------" << endl;
+			reportFile << "\n----------- YOUR BIKING ROUTE SUMMARY -----------" << endl;
+
+			cout << left << setw(24) << "Starting Point: " << right << setw(25) << StartingPoint << endl;
+			reportFile << left << setw(24) << "Starting Point: " << right << setw(25) << StartingPoint << endl;
+
+			cout << left << setw(24) << "First Destination: " << right << setw(25) << FirstDestination << endl;
+			reportFile << left << setw(24) << "First Destination: " << right << setw(25) << FirstDestination << endl;
+
+			cout << left << setw(24) << "Next Destination: " << right << setw(25) << NextDestination << endl;
+			reportFile << left << setw(24) << "Next Destination: " << right << setw(25) << NextDestination << endl;
+
+			cout << left << setw(24) << "Time (minutes): " << right << setw(25) << Minutes << endl;
+			reportFile << left << setw(24) << "Time (minutes): " << right << setw(25) << Minutes << endl;
+
+			cout << left << setw(24) << "Total Distance (miles): " << right << setw(25) << TotalDistance << endl;
+			reportFile << left << setw(24) << "Total Distance (miles): " << right << setw(25) << TotalDistance << endl;
+
+			//Closing the output file.
+			reportFile.close();
+			cout << "\nReport successfully saved to report.txt!\n";
+			break;
+		}
+		case 2: {
+			cout << "\nYou have chosen to modify your route. Please restart the program to enter new route details.\n";
+			break;
+		}
+		case 3: {
+			cout << "\nExiting the program. Enjoy Your Biking Trip!\n";
+			break;
+		}
+		default: {
+			cout << "\nInvalid option. Please select a valid option (1-3).\n";
+			break;
+		}
+	}
 	return 0;
-  
-}
+} 

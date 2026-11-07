@@ -1,7 +1,7 @@
 
 ----------- YOUR BIKING ROUTE SUMMARY -----------
-Starting Point:                  Downtown Detroit
-First Destination:              Detroit Riverwalk
-Next Destination:                      Belle Isle
-Time (minutes):                                30
-Total Distance (miles):                      1.90
+Starting Point:                                 a
+First Destination:                              b
+Next Destination:                               c
+Time (minutes):                                20
+Total Distance (miles):                      6.00
