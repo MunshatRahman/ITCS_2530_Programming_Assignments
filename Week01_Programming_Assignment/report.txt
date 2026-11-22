@@ -1,7 +1,7 @@
 
 ----------- YOUR BIKING ROUTE SUMMARY -----------
-Starting Point:                                 A
-First Destination:                              B
-Next Destination:                               C
-Time (minutes):                                10
-Total Distance (miles):                      1.20
+Starting Point:                           Point A
+First Destination:                        Point B
+Next Destination:                         Point C
+Time (minutes):                                30
+Total Distance (miles):                      5.00
