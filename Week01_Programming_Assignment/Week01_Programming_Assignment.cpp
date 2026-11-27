@@ -9,19 +9,27 @@
 #include <limits>
 using namespace std;
 
+// Enum declaration for week 6 assignment
+enum RouteType { Urban = 1, Trail, Mountain };
+
 //Function prototypes for Week 5
 void ConsoleColor();
 void DisplayBanner();
 void RouteData(string& StartPoint, string& Dest1, string& Dest2, int& minutes, double& DistAtoB, double& DistBtoC);
 double CalculateDistance(double DistAtoB, double DistBtoC);
 void DisplayMenu();
-void SaveReport(string StartPoint, string Dest1, string Dest2, int minutes, double TotalDist);
+void SaveReport(string StartPoint, string Dest1, string Dest2, int minutes, double TotalDist, double TrainingSum);
+
+// Array function prototypes for Week 6 assignment
+void GetTrainingData(double Distances[], int size);
+double CalculateTotalTraining(const double Distances[], int size);
+void EvaluateRouteType(double TotalDist); 
 
 int main() { 
-	// Calling the console color function for Week 5 assignment.
+	// Calling the console color function.
 	ConsoleColor();
 
-	// Calling the introduction banner function for Week 5 assignment.
+	// Calling the introduction banner function.
 	DisplayBanner();
 
 	// Declaring variables
@@ -34,10 +42,20 @@ int main() {
 	double TotalDistance;
 	int MenuChoice;
 
-	// Calling the route data function for Week 5 assignment. This function collects the user's biking route information.
+	// Declaring a local array for Week 6 assignment
+	const int TrainingSessions = 3;
+	double TrainingDistances[TrainingSessions] = { 0.0, 0.0, 0.0 };
+	
+	// Calling the route data function. This function collects the user's biking route information.
 	RouteData(StartingPoint, FirstDestination, NextDestination, Minutes, DistancefromPointAtoB, DistancefromPointBtoC);
 	
-	// Calling the calculate distance function for Week 5 assignment.
+	// Calling the get training data function for Week 6 assignment. This function collects the user's training distances.
+	GetTrainingData(TrainingDistances, TrainingSessions);
+
+	// Calling the calculate total training function for Week 6 assignment. This function calculates the total training distance.
+	double TrainingSum = CalculateTotalTraining(TrainingDistances, TrainingSessions);
+
+	// Calling the calculate distance function.
 	TotalDistance = CalculateDistance(DistancefromPointAtoB, DistancefromPointBtoC);
 
 	// Displaying the message for the user's biking route.
@@ -58,6 +76,9 @@ int main() {
 		cout << "\nBoth of your destinations are within 5 miles." << endl;
 	}
 
+	// Calling the evaluate route type function for Week 6 assignment. This function evaluates the route type based on the total distance.
+	EvaluateRouteType(TotalDistance);
+
 	// For loops about the route distance checkpoints.
 	for (int i = 1; i <= 3; i++) {
 		cout << "\n--- Route Distance Checkpoints ---" << endl;
@@ -67,14 +88,14 @@ int main() {
 
 	// Adding user input options menu using switch
 	do { 
-		// Calling the display menu function for Week 5 assignment. This function displays the options menu.
+		// Calling the display menu function. This function displays the options menu.
 		DisplayMenu();
 		cin >> MenuChoice;
 						
 		switch (MenuChoice) {
 			case 1: {
-				// Calling the save report function (the pretty summary table) for Week 5 assignment. This function displays the summary report.
-				SaveReport(StartingPoint, FirstDestination, NextDestination, Minutes, TotalDistance);
+				// Calling the save report function (the pretty summary table). This function displays the summary report.
+				SaveReport(StartingPoint, FirstDestination, NextDestination, Minutes, TotalDistance, TrainingSum); 
 				break;
 			}
 			case 2: {
@@ -94,7 +115,7 @@ int main() {
 	return 0;
 } 
 
-// Function definitions for Week 5 assignment
+// Function definitions
 
 // 1. Function to change console color to red. 
 void ConsoleColor() {
@@ -161,8 +182,62 @@ void DisplayMenu() {
 	cout << "Please select an option (1-3): ";
 }
 
-// 6. Function to save the route summary
-void SaveReport(string StartPoint, string Dest1, string Dest2, int minutes, double TotalDist) {
+// 6. Defining the array function to collect training distances from the user for Week 6 assignment.
+void GetTrainingData(double Distances[], int size) {
+	cout << "\n--- Past Training Sessions ---" << endl;
+	for (int i = 0; i < size; i++) {
+		cout << "Ride " << (i + 1) << " distance in miles: ";
+		cin >> Distances[i];
+		while (cin.fail() || Distances[i] <= 0) {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "Invalid Input. Distance must be greater than zero. Please enter a valid distance in miles: ";
+			cin >> Distances[i];
+		}
+	}
+}
+
+// 7. Defining the array function to calculate the total training distance for Week 6 assignment.
+double CalculateTotalTraining(const double Distances[], int size) {
+	double sum = 0;
+	for (int i = 0; i < size; i++) {
+		sum += Distances[i];
+	}
+	return sum;
+}
+
+// 8. Function to evaluate the route type based on the total distance for Week 6 assignment.
+void EvaluateRouteType(double TotalDist) {
+	RouteType Route;
+	if (TotalDist < 5.0) {
+		Route = Urban;
+	}
+	else if (TotalDist >= 5.0 && TotalDist <= 15.0) {
+		Route = Trail;
+	}
+	else {
+		Route = Mountain;
+	}
+
+	cout << "\nYour Route Type: ";
+	switch (Route) {
+	case Urban:
+		cout << "Urban Route" << endl;
+		break;
+	case Trail:
+		cout << "Trail Route" << endl;
+		break;
+	case Mountain:
+		cout << "Mountain Route" << endl;
+		break;
+	default:
+		cout << "General Route" << endl;
+		break;
+	}
+}
+
+// 9. Function to save the route summary
+void SaveReport(string StartPoint, string Dest1, string Dest2, int minutes, double TotalDist, double TrainingSum) {
 	ofstream reportFile("report.txt");
 	
 	cout << fixed << setprecision(2);
@@ -186,6 +261,9 @@ void SaveReport(string StartPoint, string Dest1, string Dest2, int minutes, doub
 	cout << left << setw(24) << "Total Distance (miles): " << right << setw(25) << TotalDist << endl;
 	reportFile << left << setw(24) << "Total Distance (miles): " << right << setw(25) << TotalDist << endl;
 	
+	cout << left << setw(32) << "Total Training Distance: " << right << setw(17) << TrainingSum << endl;
+	reportFile << left << setw(32) << "Total Training Distance: " << right << setw(17) << TrainingSum << endl;
+
 	reportFile.close();
 	cout << "\nReport successfully saved to report.txt!\n";
 }

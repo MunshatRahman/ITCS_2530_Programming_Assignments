@@ -3,5 +3,6 @@
 Starting Point:                           Point A
 First Destination:                        Point B
 Next Destination:                         Point C
-Time (minutes):                                30
-Total Distance (miles):                      5.00
+Time (minutes):                                40
+Total Distance (miles):                      8.00
+Total Training Distance:                    45.00
